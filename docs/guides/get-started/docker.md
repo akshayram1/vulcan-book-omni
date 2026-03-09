@@ -373,6 +373,9 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
 
     - `semantics/` - Semantic layer definitions (measures, dimensions, etc.)
 
+    !!! important "Configure Your Connection"
+        After initialization, verify your `config.yaml` has the correct connection values. Replace the connection values (`host`, `port`, `database`, `user`, `password`) with values that match your actual database setup. For Docker setups, use the service names (`warehouse`, `statestore`) as hostnames. For local or remote databases, use the actual hostname or IP address.
+
     **Step 2: Verify Your Setup**
     
     Check your project configuration and connection status: [*Learn more about info*](../../cli-commands/cli.md#info){:target="_blank"}
@@ -460,6 +463,9 @@ Now that your environment is set up, let's create your first Vulcan project. Thi
     - `checks/` - Write data quality checks
 
     - `semantics/` - Semantic layer definitions (measures, dimensions, etc.)
+
+    !!! important "Configure Your Connection"
+        After initialization, verify your `config.yaml` has the correct connection values. Replace the connection values (`host`, `port`, `database`, `user`, `password`) with values that match your actual database setup. For Docker setups, use the service names (`warehouse`, `statestore`) as hostnames. For local or remote databases, use the actual hostname or IP address.
 
     **Step 2: Verify Your Setup**
     
@@ -599,6 +605,58 @@ If you encounter any issues during setup or while using Vulcan, refer to the sol
 
     - **Windows**: Docker Desktop → Settings → Resources → Advanced
     
+    
+    **Invalid Connection Config Error**
+    
+    If you see an error like:
+    
+    ```
+    Error: Invalid 'postgres' connection config:
+      Field 'host': Input should be a valid string
+      Field 'user': Input should be a valid string
+      Field 'password': Input should be a valid string
+      Field 'port': Input should be a valid integer
+      Field 'database': Input should be a valid string
+    ```
+    
+    This means your `config.yaml` file is missing or incomplete. You need to create or update your `config.yaml` file with proper gateway configuration before running `vulcan info` or other Vulcan commands.
+    
+    **Solution:**
+    
+    1. **If you haven't initialized your project yet**, run `vulcan init` first. This creates a `config.yaml` file with the correct structure.
+    
+    2. **If you already have a project**, ensure your `config.yaml` file includes a `gateways` section with all required connection fields. Here's a minimal example for Postgres:
+    
+    ```yaml
+    gateways:
+      default:
+        connection:
+          type: postgres
+          host: warehouse
+          port: 5432
+          database: warehouse
+          user: vulcan
+          password: vulcan
+        state_connection:
+          type: postgres
+          host: statestore
+          port: 5432
+          database: statestore
+          user: vulcan
+          password: vulcan
+    
+    default_gateway: default
+    
+    model_defaults:
+      dialect: postgres
+    ```
+    
+    !!! important "Connection Values"
+        **Important:** Replace the connection values (`host`, `port`, `database`, `user`, `password`) with values that match your actual database setup. For Docker setups, use the service names (`warehouse`, `statestore`) as hostnames. For local or remote databases, use the actual hostname or IP address.
+    
+    See the [Configuration Overview](../../configurations/overview.md) for detailed information about gateway configuration.
+    
+
     **Network Errors**
     
     If you encounter network-related errors, ensure the `vulcan` Docker network exists:

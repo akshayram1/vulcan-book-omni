@@ -82,19 +82,20 @@ ds resource apply -f git-sync-secret.yaml
 
 **Example secret configuration:**
 ```yaml
-version: v1
-type: secret
 name: git-sync
-workspace: <workspace-name>
-spec:
-  type: key-value-properties
-  acl: r
+version: v2alpha
+type: secret
+workspace: system
+layer: user
+description: "Secret for git-sync authentication (Bitbucket)"
+secret:
+  type: key-value
   data:
-    username: <your-git-username>
-    password: <your-git-token-or-password>
+    GITSYNC_USERNAME: "<your-git-username>"
+    GITSYNC_PASSWORD: "<your-git-token-or-password>"
 ```
 
-> **Important:** Replace credentials with your actual Git repository access tokens.
+> **Important:** Replace `GITSYNC_USERNAME` and `GITSYNC_PASSWORD` with your actual Git repository credentials or access tokens.
 
 ---
 

@@ -138,6 +138,5 @@ This package contains all the Docker Compose files and Windows batch scripts nee
 - **MinIO Console**: 9001 (admin/password)
 
 - **Vulcan API**: 8000
-```
 
 

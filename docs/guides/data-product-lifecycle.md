@@ -24,46 +24,68 @@ This creates:
 
 Create an alias to access the Vulcan CLI. The alias uses an engine-specific Docker image. **Postgres is shown by default** (recommended for most users). If you're using a different engine, select it from the tabs below:
 
+!!! note "Automatic Updates"
+    Docker image versions in this section are automatically synchronized with the engine configuration files. When engine image versions are updated, this section is automatically updated as well.
+
 === "Postgres (Default)"
     ```bash
-    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.6 vulcan"
+    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.10 vulcan"
     ```
+    *Image version from [Postgres engine configuration](../../configurations/engines/postgres/postgres.md#docker-images)*
+
 === "BigQuery"
     ```bash
-    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-bigquery:0.228.1.6 vulcan"
+    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-bigquery:0.228.1.10 vulcan"
     ```
+    *Image version from [BigQuery engine configuration](../../configurations/engines/bigquery/bigquery.md#docker-images)*
+
 === "Databricks"
     ```bash
-    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.6 vulcan"
+    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.10 vulcan"
     ```
+    *Image version from [Databricks engine configuration](../../configurations/engines/databricks/databricks.md#docker-images)*
+
 === "Fabric"
     ```bash
     alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-fabric:0.228.1.6 vulcan"
     ```
+    *Image version from [Fabric engine configuration](../../configurations/engines/fabric/fabric.md#docker-images)*
+
 === "MSSQL"
     ```bash
     alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-mssql:0.228.1.6 vulcan"
     ```
+    *Image version from [MSSQL engine configuration](../../configurations/engines/mssql/mssql.md#docker-images)*
+
 === "MySQL"
     ```bash
     alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-mysql:0.228.1.6 vulcan"
     ```
+    *Image version from [MySQL engine configuration](../../configurations/engines/mysql/mysql.md#docker-images)*
+
 === "Redshift"
     ```bash
     alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-redshift:0.228.1.6 vulcan"
     ```
+    *Image version from [Redshift engine configuration](../../configurations/engines/redshift/redshift.md#docker-images)*
+
 === "Snowflake"
     ```bash
-    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.6 vulcan"
+    alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.10 vulcan"
     ```
+    *Image version from [Snowflake engine configuration](../../configurations/engines/snowflake/snowflake.md#docker-images)*
+
 === "Spark"
     ```bash
     alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-spark:0.228.1.6 vulcan"
     ```
+    *Image version from [Spark engine configuration](../../configurations/engines/spark/spark.md#docker-images)*
+
 === "Trino"
     ```bash
     alias vulcan="docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-trino:0.228.1.6 vulcan"
     ```
+    *Image version from [Trino engine configuration](../../configurations/engines/trino/trino.md#docker-images)*
 
 Verify it works:
 
