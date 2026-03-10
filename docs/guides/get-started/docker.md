@@ -80,11 +80,11 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     
     ```bash
     make setup
-    or
-    docker network create vulcan
-    docker compose -f docker/docker-compose.infra.yml up -d
-    docker compose -f docker/docker-compose.warehouse.yml up -d
-    or
+    ```
+    
+    Or, if you prefer running Docker Compose directly:
+    
+    ```bash
     docker network create vulcan
     docker compose -f docker/docker-compose.infra.yml up -d
     docker compose -f docker/docker-compose.warehouse.yml up -d
@@ -215,22 +215,47 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
 
     
     **Step 4: Start API Services**
+
+    **Configure Environment Variables**
     
-    Start the Vulcan API services:
+    Before starting the services, open `docker/docker-compose.vulcan.yml` and replace the following placeholders with your actual values:
+    
+    | Variable | Placeholder | Description |
+    |---|---|---|
+    | `DATAOS_RUN_AS_USER` | `<your-dataos-username>` | Your DataOS user ID |
+    | `DATAOS_RUN_AS_APIKEY` | `<your-dataos-api-key>` | Your DataOS API key |
+    | `HEIMDALL_URL` | `<your-dataos-context>` | Your DataOS context URL (e.g., `https://my-context.dataos.app/heimdall`) |
+
+    **Generate SSL Certificates for MySQL Wire Protocol (Optional)**
+    
+    If you plan to use the Vulcan MySQL wire protocol service (`vulcan-mysql`), SSL/TLS certificates are required. Generate them before starting the service:
+    
+    ```bash
+    mkdir -p docker/ssl
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+      -keyout docker/ssl/server.key -out docker/ssl/server.crt \
+      -subj "/CN=vulcan-mysql"
+    ```
+
+    **Start the services:**
     
     ```bash
     make vulcan-up
-    or
-    docker compose -f docker/docker-compose.vulcan.yml up -d
-    or
+    ```
+    
+    Or, if you prefer running Docker Compose directly:
+    
+    ```bash
     docker compose -f docker/docker-compose.vulcan.yml up -d
     ```
     
-    This command starts two services:
+    This command starts the following services:
     
     - **vulcan-api**: A REST API server for querying your semantic model (available at `http://localhost:8000`)
 
-    - **vulcan-transpiler**: A service for transpiling semantic queries to SQL
+    - **vulcan-graphql**: A GraphQL interface for querying your semantic layer (available at `http://localhost:3000`)
+
+    - **vulcan-mysql** *(optional)*: MySQL wire protocol access to Vulcan for BI tool connectivity (available at `localhost:3307`)
     
     Once these services are running, you're ready to create your first project!
 
@@ -311,29 +336,128 @@ Follow these steps to set up Vulcan on your local machine. The setup process wil
     
     Once all containers are running properly and logs look healthy, proceed to the next step.
     
-    **Step 3: Access Vulcan CLI**
+    **Step 3: Configure Vulcan CLI Access**
     
-    Use the provided batch script to access the Vulcan CLI:
-    
-    ```cmd
-    vulcan.bat
-    ```
-    
-    This script runs Vulcan commands in a Docker container with the correct network and volume settings.
+    Create a function to access the Vulcan CLI. Open PowerShell and run the following command. **Postgres is shown by default** (recommended for most users). If you're using a different engine, select it from the tabs below:
+
+    === "Postgres (Default)"
+        ```powershell
+        function vulcan {
+          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-postgres:0.228.1.10 vulcan $args
+        }
+        ```
+        *Image version from [Postgres engine configuration](../../configurations/engines/postgres/postgres.md#docker-images)*
+
+    === "BigQuery"
+        ```powershell
+        function vulcan {
+          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-bigquery:0.228.1.10 vulcan $args
+        }
+        ```
+        *Image version from [BigQuery engine configuration](../../configurations/engines/bigquery/bigquery.md#docker-images)*
+
+    === "Databricks"
+        ```powershell
+        function vulcan {
+          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-databricks:0.228.1.10 vulcan $args
+        }
+        ```
+        *Image version from [Databricks engine configuration](../../configurations/engines/databricks/databricks.md#docker-images)*
+
+    === "Fabric"
+        ```powershell
+        function vulcan {
+          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-fabric:0.228.1.6 vulcan $args
+        }
+        ```
+        *Image version from [Fabric engine configuration](../../configurations/engines/fabric/fabric.md#docker-images)*
+
+    === "MSSQL"
+        ```powershell
+        function vulcan {
+          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-mssql:0.228.1.6 vulcan $args
+        }
+        ```
+        *Image version from [MSSQL engine configuration](../../configurations/engines/mssql/mssql.md#docker-images)*
+
+    === "MySQL"
+        ```powershell
+        function vulcan {
+          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-mysql:0.228.1.6 vulcan $args
+        }
+        ```
+        *Image version from [MySQL engine configuration](../../configurations/engines/mysql/mysql.md#docker-images)*
+
+    === "Redshift"
+        ```powershell
+        function vulcan {
+          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-redshift:0.228.1.6 vulcan $args
+        }
+        ```
+        *Image version from [Redshift engine configuration](../../configurations/engines/redshift/redshift.md#docker-images)*
+
+    === "Snowflake"
+        ```powershell
+        function vulcan {
+          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-snowflake:0.228.1.10 vulcan $args
+        }
+        ```
+        *Image version from [Snowflake engine configuration](../../configurations/engines/snowflake/snowflake.md#docker-images)*
+
+    === "Spark"
+        ```powershell
+        function vulcan {
+          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-spark:0.228.1.6 vulcan $args
+        }
+        ```
+        *Image version from [Spark engine configuration](../../configurations/engines/spark/spark.md#docker-images)*
+
+    === "Trino"
+        ```powershell
+        function vulcan {
+          docker run -it --network=vulcan --rm -v .:/workspace tmdcio/vulcan-trino:0.228.1.6 vulcan $args
+        }
+        ```
+        *Image version from [Trino engine configuration](../../configurations/engines/trino/trino.md#docker-images)*
+
+    **Note**: This function is temporary and will be lost when you close your PowerShell session. To make it permanent, add it to your PowerShell profile. Run `notepad $PROFILE` to open your profile file, paste the function, and save.
     
     **Step 4: Start API Services**
+
+    **Configure Environment Variables**
     
-    Start the Vulcan API services:
+    Before starting the services, open `docker\docker-compose.vulcan.yml` and replace the following placeholders with your actual values:
+    
+    | Variable | Placeholder | Description |
+    |---|---|---|
+    | `DATAOS_RUN_AS_USER` | `<your-dataos-username>` | Your DataOS user ID |
+    | `DATAOS_RUN_AS_APIKEY` | `<your-dataos-api-key>` | Your DataOS API key |
+    | `HEIMDALL_URL` | `<your-dataos-context>` | Your DataOS context URL (e.g., `https://my-context.dataos.app/heimdall`) |
+
+    **Generate SSL Certificates for MySQL Wire Protocol (Optional)**
+    
+    If you plan to use the Vulcan MySQL wire protocol service (`vulcan-mysql`), SSL/TLS certificates are required. Generate them before starting the service:
+    
+    ```cmd
+    mkdir docker\ssl
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 ^
+      -keyout docker\ssl\server.key -out docker\ssl\server.crt ^
+      -subj "/CN=vulcan-mysql"
+    ```
+
+    **Start the services:**
     
     ```cmd
     start-vulcan-api.bat
     ```
     
-    This command starts two services:
+    This command starts the following services:
     
     - **vulcan-api**: A REST API server for querying your semantic model (available at `http://localhost:8000`)
 
-    - **vulcan-transpiler**: A service for transpiling semantic queries to SQL
+    - **vulcan-graphql**: A GraphQL interface for querying your semantic layer (available at `http://localhost:3000`)
+
+    - **vulcan-mysql** *(optional)*: MySQL wire protocol access to Vulcan for BI tool connectivity (available at `localhost:3307`)
     
     Once these services are running, you're ready to create your first project!
 
@@ -534,11 +658,12 @@ When you're done working with Vulcan, you can stop the services to free up syste
     To stop all running services:
     
     ```bash
-    make all-down       # Stop all services
-    or
-    docker compose -f docker/docker-compose.infra.yml down -v
-    docker compose -f docker/docker-compose.warehouse.yml down -v
-    or
+    make all-down
+    ```
+    
+    Or, if you prefer running Docker Compose directly:
+    
+    ```bash
     docker compose -f docker/docker-compose.infra.yml down -v
     docker compose -f docker/docker-compose.warehouse.yml down -v
     ```
@@ -557,10 +682,6 @@ When you're done working with Vulcan, you can stop the services to free up syste
     
     ```bash
     make vulcan-down     # Stop only Vulcan API services
-    or
-    docker compose -f docker/docker-compose.vulcan.yml down -v
-    or
-    docker compose -f docker/docker-compose.vulcan.yml down -v
     make infra-down      # Stop infrastructure services (statestore, minio)
     make warehouse-down  # Stop warehouse services
     ```
