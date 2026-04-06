@@ -60,6 +60,7 @@ nav:
   - Guides:
       - guides/get-started/docker.md
       # - guides/plan.md
+      - guides/data-product-lifecycle.md
       - guides/plan_guide.md
       - guides/run_and_scheduling.md
       - guides/models.md
@@ -69,6 +70,7 @@ nav:
       - guides/transpiling_semantics.md
       - guides/semantic_query_lifecycle.md
       - guides/deployment_guide.md
+      
       #- guides/federated_engines.md
       # - Virtual environments Guide:
       # - Vulcan API Guide:
