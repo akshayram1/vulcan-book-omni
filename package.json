@@ -1,0 +1,14 @@
+{
+  "name": "vulcan-book-omni",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:chatbot": "node scripts/build-chatbot.mjs"
+  },
+  "dependencies": {
+    "@akshayram1/omnibrowser-agent": "^0.3.4"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.2"
+  }
+}

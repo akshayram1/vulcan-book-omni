@@ -208,6 +208,7 @@ extra_css:
 extra_javascript:
   - assets/javascripts/mermaid-zoom.js
   - assets/javascripts/favicon-switcher.js
+  - assets/javascripts/chatbot.js
 
 copyright: |
   Copyright &copy; 2025 DataOS Vulcan Team<br>

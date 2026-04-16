@@ -6,6 +6,8 @@ __pycache__/
 .python-version
 .DS_Store
 *.egg-info/
+node_modules/
+.vercel/
 
 # Non-essential / internal-only files
 __draft/
